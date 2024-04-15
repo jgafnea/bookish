@@ -1,18 +1,24 @@
 import argparse
 
 from libgen_api import LibgenSearch
+from pyshorteners import Shortener
 from rich.console import Console
 from rich.table import Table
 
 
-# def search_books(query, count=10):
 def search_books(query):
     search = LibgenSearch()
     results = search.search_title(query)
-    return results
+    return (search, results)
 
 
-def display_results(results):
+def get_download(search, result):
+    resolved = search.resolve_download_links(result)["GET"]
+    shortened = Shortener().tinyurl.short(resolved)
+    return shortened
+
+
+def display_results(search, results):
     table = Table(title="Search Results")
     table.add_column("Title", style="cyan", justify="left")
     table.add_column("Author", style="magenta", justify="left")
@@ -21,12 +27,14 @@ def display_results(results):
     table.add_column("Download Link", style="blue", justify="left")
 
     for book in results:
+        # Get resolved download for each search result
+        download_link = get_download(search, book)
         table.add_row(
             book["Title"],
             book["Author"],
             book["Extension"],
             book["Size"],
-            book["Mirror_1"],
+            download_link,
         )
 
     console = Console()
@@ -34,20 +42,15 @@ def display_results(results):
 
 
 def main():
-    # console = Console()
     parser = argparse.ArgumentParser(description="Search books using Libgen API")
     parser.add_argument("query", type=str, help="Search query for books")
     args = parser.parse_args()
 
-    # query = Prompt.ask("Enter your search query:")
-    # count = Prompt.ask(
-    #     "Enter the number of results to display:", default="10", type=int
-    # )
-    # parser =
-    results = search_books(args.query)
+    # Passing search around because it's needed to get resolved download links
+    search, results = search_books(args.query)
 
     if results:
-        display_results(results)
+        display_results(search, results)
     else:
         console = Console()
         console.print(
