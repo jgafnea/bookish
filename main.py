@@ -8,7 +8,9 @@ from rich.table import Table
 
 def search_books(query):
     search = LibgenSearch()
-    results = search.search_title(query)
+    # results = search.search_title(query)
+    filters = {"Language": "English"}
+    results = search.search_title_filtered(query, filters)
     return (search, results)
 
 
@@ -21,8 +23,9 @@ def get_download(search, result):
 def display_results(search, results):
     table = Table(title="Search Results")
     table.add_column("Title", style="cyan", justify="left")
-    table.add_column("Author", style="magenta", justify="left")
-    table.add_column("Extension", style="green", justify="left")
+    table.add_column("Year", style="blue", justify="left")
+    table.add_column("Author", style="green", justify="left")
+    table.add_column("Extension", style="white", justify="left")
     table.add_column("File Size", style="yellow", justify="left")
     table.add_column("Download Link", style="blue", justify="left")
 
@@ -31,6 +34,7 @@ def display_results(search, results):
         download_link = get_download(search, book)
         table.add_row(
             book["Title"],
+            book["Year"],
             book["Author"],
             book["Extension"],
             book["Size"],
