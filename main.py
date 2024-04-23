@@ -29,7 +29,10 @@ def display_results(search, results):
     table.add_column("File Size", style="yellow", justify="left")
     table.add_column("Download Link", style="blue", justify="left")
 
-    for book in results:
+    # Doing this here bc search api doesn't allow more than one extension
+    wanted = ("epub", "pdf")
+    filtered = [book for book in results if book["Extension"] in wanted]
+    for book in filtered:
         # Get resolved download for each search result
         download_link = get_download(search, book)
         table.add_row(
