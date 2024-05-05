@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "clibget"
+name = "libget" 
 version = "0.1.0"
 description = ""
 authors = ["jgafnea <jgafnea@mail.com>"]
