@@ -1,5 +1,3 @@
-# import argparse
-#
 from libgen_api import LibgenSearch
 from pyshorteners import Shortener
 from rich.console import Console
@@ -46,26 +44,3 @@ def display_results(search, results):
 
     console = Console()
     console.print(table)
-
-
-# def main():
-#     parser = argparse.ArgumentParser(description="Search books using Libgen API")
-#     parser.add_argument("query", type=str, help="Search query for books")
-#     args = parser.parse_args()
-#
-#     # Passing search around because it's needed to get resolved download links
-#     search, results = search_books(args.query)
-#
-#     if results:
-#         display_results(search, results)
-#     else:
-#         console = Console()
-#         console.print(
-#             "[bold red]No results found for the query '{}'[/bold red]".format(
-#                 args.query
-#             )
-#         )
-#
-#
-# if __name__ == "__main__":
-#     main()
