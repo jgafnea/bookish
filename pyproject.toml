@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "libget" 
+version = "0.1.0"
+description = ""
+authors = ["jgafnea <jgafnea@mail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pyshorteners = "^1.0.1"
+rich = "^13.7.1"
+libgen-api = "^1.0.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
