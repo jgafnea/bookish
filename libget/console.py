@@ -5,7 +5,7 @@ from rich.console import Console
 from .search import display_results, search_books
 
 
-def main():
+def run():
     parser = argparse.ArgumentParser(description="Search books using Libgen API")
     parser.add_argument("query", type=str, help="Search query for books")
     args = parser.parse_args()
@@ -21,3 +21,7 @@ def main():
                 args.query
             )
         )
+
+
+if __name__ == "__main__":
+    run()

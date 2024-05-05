@@ -5,6 +5,9 @@ description = ""
 authors = ["jgafnea <jgafnea@mail.com>"]
 readme = "README.md"
 
+[tool.poetry.scripts]
+libget = 'libget.console:run'
+
 [tool.poetry.dependencies]
 python = "^3.10"
 pyshorteners = "^1.0.1"
