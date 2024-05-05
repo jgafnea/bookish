@@ -15,7 +15,7 @@ def search_books(query) -> list:
     results = [book for book in filtered if book["Extension"] in (file_filter)]
 
     for book in results:
-        # Resolve download links and shorten to fit in terminal
+        # Resolve links then shorten so they fit table
         resolved = search.resolve_download_links(book)["GET"]
         tinyurl = Shortener().tinyurl.short(resolved)
         book["Link"] = tinyurl
@@ -23,29 +23,17 @@ def search_books(query) -> list:
     return results
 
 
-# def get_download(search, result):
-#     resolved = search.resolve_download_links(result)["GET"]
-#     shortened = Shortener().tinyurl.short(resolved)
-#     return shortened
-
-
 def display_results(results):
     # https://rich.readthedocs.io/en/stable/appendix/colors.html
     table = Table(title="Search Results")
-    #
     table.add_column("Title", style="bright_cyan", justify="left")
     table.add_column("Year", style="cyan", justify="left")
-    #
     table.add_column("Author", style="bright_magenta", justify="left")
-    #
     table.add_column("Ext", style="green", justify="left")
     table.add_column("Size", style="bright_green", justify="right")
-    #
     table.add_column("Link", style="bright_blue", justify="left")
 
     for book in results:
-        # Get resolved download for each search result
-        # download_link = get_download(search, book)
         table.add_row(
             book["Title"],
             book["Year"],
