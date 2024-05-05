@@ -10,11 +10,10 @@ def main():
     parser.add_argument("query", type=str, help="Search query for books")
     args = parser.parse_args()
 
-    # Passing search around because it's needed to get resolved download links
-    search, results = search_books(args.query)
+    results = search_books(args.query)
 
     if results:
-        display_results(search, results)
+        display_results(results)
     else:
         console = Console()
         console.print(
