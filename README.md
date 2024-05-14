@@ -1,3 +1,3 @@
-# libget 
+# booksi
 
-Get books using libgen-api.
+Get books

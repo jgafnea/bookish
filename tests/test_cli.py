@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
-from libget.console import run
+from booksi.console import run
 
 
 def test_without_arguments():

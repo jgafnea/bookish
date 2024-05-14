@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "libget" 
+name = "booksi" 
 version = "0.1.0"
 description = ""
 authors = ["jgafnea <jgafnea@mail.com>"]
 readme = "README.md"
 
 [tool.poetry.scripts]
-libget = 'libget.console:run'
+booksi = 'booksi.console:run'
 
 [tool.poetry.dependencies]
 python = "^3.10"
