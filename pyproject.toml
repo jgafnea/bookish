@@ -4,9 +4,10 @@ version = "0.1.0"
 description = ""
 authors = ["jgafnea <jgafnea@mail.com>"]
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.scripts]
-booksi = 'booksi.console:run'
+booksi = 'src.console:run'
 
 [tool.poetry.dependencies]
 python = "^3.10"
