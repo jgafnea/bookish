@@ -4,10 +4,13 @@ version = "0.1.0"
 description = ""
 authors = ["jgafnea <jgafnea@mail.com>"]
 readme = "README.md"
-package-mode = false
 
-[tool.poetry.scripts]
-booksi = 'src.console:run'
+packages = [
+  { include = "src" },
+]
+include = [
+  "README.md",
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -21,3 +24,7 @@ pytest = "^8.2.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+booksi = 'src.runner:main'
+

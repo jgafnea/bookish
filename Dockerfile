@@ -1,42 +1,23 @@
-FROM python:3.11-alpine AS base
+FROM python:3.12-slim AS base
 
-ARG DEV=false
-
-ENV VIRTUAL_ENV=/app/.venv \
-    PATH="/app/.venv/bin:$PATH"
-
-RUN apk update && \
-    apk add libpq
+# # Upgrade/add packages
+# RUN pip install --upgrade pip 
+# RUN apt update && apt -y upgrade && \
+# 	apt install -y PACKAGE && \
+# 	rm -rf /var/lib/apt/lists/*
 
 FROM base AS builder
 
-ENV POETRY_NO_INTERACTION=1 \
-    POETRY_VIRTUALENVS_IN_PROJECT=1 \
-    POETRY_VIRTUALENVS_CREATE=1 \
-    POETRY_CACHE_DIR=/tmp/poetry_cache
+WORKDIR /build
+COPY . ./
+ENV PATH  $PATH:/root/.local/bin
 
-RUN apk update && \
-    apk add musl-dev build-base gcc gfortran openblas-dev
+# Install poetry from pipx then use poetry to build and pip to install
+RUN pip install pipx && pipx install poetry && \
+	poetry build && pip install dist/*.whl
+
+FROM base AS runner 
+COPY --from=builder /usr/local /usr/local
 
 WORKDIR /app
-
-# Install Poetry
-RUN pip install poetry
-
-# Install app
-COPY pyproject.toml poetry.lock ./
-RUN if [ $DEV ]; then \
-    poetry install --with dev --no-root && rm -rf $POETRY_CACHE_DIR; \
-    else \
-    poetry install --without dev --no-root && rm -rf $POETRY_CACHE_DIR; \
-    fi
-
-FROM base AS runtime
-
-COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
-
-COPY src ./src
-
-WORKDIR /app/src
-
-# ENTRYPOINT ["python", "-m", "app.main"]
+ENTRYPOINT ["booksi"]
