@@ -6,7 +6,6 @@ from rich.console import Console
 from .search import display_results, search_books
 
 
-# def run():
 def main():
     parser = argparse.ArgumentParser(description="Search books using Libgen API")
     parser.add_argument("query", type=str, help="Search query for books")
