@@ -2,7 +2,7 @@ from libgen_api import LibgenSearch
 from pyshorteners import Shortener
 from rich import box
 from rich.console import Console
-from rich.progress import track
+from rich.progress import Progress
 from rich.table import Table
 
 
@@ -13,20 +13,28 @@ def search_books(query) -> list:
 
     search = LibgenSearch()
 
-    filtered = search.search_title_filtered(query, lang_filter)
-    results = [book for book in filtered if book["Extension"] in (file_filter)]
+    # Filter twice, first using libgen for language, then using our own for file type.
+    pending = search.search_title_filtered(query, lang_filter)
+    results = [book for book in pending if book["Extension"] in (file_filter)]
 
-    for book in track(results, description="Working..."):
+    # Capture length so progress advances correctly.
+    total_work = len(results)
 
-        # Resolve links then shorten so they fit table
-        resolved = search.resolve_download_links(book)["GET"]
-        tinyurl = Shortener().tinyurl.short(resolved)
-        book["Link"] = tinyurl
+    with Progress(transient=True) as progress:
+        task = progress.add_task("Working...", total=total_work)
+
+        for book in results:
+
+            resolved = search.resolve_download_links(book)["GET"]
+            tinyurl = Shortener().tinyurl.short(resolved)
+            book["Link"] = tinyurl
+
+            progress.update(task, advance=1)
 
     return results
 
 
-def display_results(results):
+def display_results(results) -> None:
     # https://rich.readthedocs.io/en/stable/appendix/colors.html
     table = Table(title="", box=box.SIMPLE_HEAD)
 

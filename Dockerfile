@@ -19,4 +19,4 @@ FROM base AS runner
 COPY --from=builder /usr/local /usr/local
 
 WORKDIR /app
-ENTRYPOINT ["booksi"]
+ENTRYPOINT ["bookie"]

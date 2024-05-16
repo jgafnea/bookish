@@ -1,16 +1,11 @@
 [tool.poetry]
-name = "booksi" 
+name = "bookie"
 version = "0.1.0"
 description = ""
 authors = ["jgafnea <jgafnea@mail.com>"]
 readme = "README.md"
-
-packages = [
-  { include = "src" },
-]
-include = [
-  "README.md",
-]
+packages = [ { include = "src" } ]
+# include = [ "README.md" ]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -25,6 +20,6 @@ pytest = "^8.2.0"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
+# Run `poetry install` after changing to make scripts available.
 [tool.poetry.scripts]
-booksi = 'src.runner:main'
-
+bookie = 'src.runner:main'
