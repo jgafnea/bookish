@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "bookie"
+name = "bookr"
 version = "0.1.0"
 description = ""
 authors = ["jgafnea <jgafnea@mail.com>"]
@@ -22,4 +22,4 @@ build-backend = "poetry.core.masonry.api"
 
 # Run `poetry install` after changing to make scripts available.
 [tool.poetry.scripts]
-bookie = 'src.runner:main'
+bookr = 'src.runner:main'
