@@ -8,6 +8,7 @@ from rich.progress import Progress
 from rich.table import Table
 
 Book = namedtuple("Book", "title, year, author, extension, size, download")
+books = []
 
 
 def search_books(query) -> list:
@@ -21,34 +22,33 @@ def search_books(query) -> list:
     results = search.search_title_filtered(query, lang_filter)
     results = [r for r in results if r["Extension"] in (file_filter)]
 
-    books = []
-    for book_data in results:
-        resolved = search.resolve_download_links(book_data)["GET"]
-        tinyurl = Shortener().tinyurl.short(resolved)
-        book_data["Download"] = tinyurl
+    with Progress(transient=True) as progress:
+        # Capture n results so progress is roughly accurate.
+        total_work = len(results)
+        task = progress.add_task("Working...", total=total_work)
 
-        book_data = {
-            # Make keys lowercase so book_data['Author'] becomes Book.author.
-            key.lower(): value
-            for key, value in book_data.items()
-            # Get relevant keys from Book._fields.
-            if key.lower() in set(Book._fields)
-        }
+        for book_data in results:
+            resolved = search.resolve_download_links(book_data)["GET"]
+            tinyurl = Shortener().tinyurl.short(resolved)
+            book_data["Download"] = tinyurl
 
-        # Create new Book objects and add to list.
-        book = Book(**book_data)
-        books.append(book)
+            book_data = {
+                # Make keys lowercase so book_data['Author'] becomes Book.author.
+                key.lower(): value
+                for key, value in book_data.items()
+                # Get relevant keys from Book._fields.
+                if key.lower() in set(Book._fields)
+            }
+
+            # Create new Book objects and add to list.
+            book = Book(**book_data)
+            books.append(book)
+
+            # Update
+            progress.update(task, advance=1)
 
     # Sort new list showing most recent first.
     books.sort(key=lambda book: book.year, reverse=True)
-
-    # Capture book quantity so progress updates roughly accurate.
-    total_work = len(books)
-
-    # Show progress then clear when finished.
-    with Progress(transient=True) as progress:
-        task = progress.add_task("Working...", total=total_work)
-        progress.update(task, advance=1)
 
     return books
 
