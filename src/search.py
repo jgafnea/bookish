@@ -13,17 +13,17 @@ books = []
 
 def search_books(query) -> list:
 
+    search = LibgenSearch()
+
     lang_filter = {"Language": "English"}
     file_filter = ("epub", "pdf")
-
-    search = LibgenSearch()
 
     # Filter twice, first using libgen for language, then using our own for file type.
     results = search.search_title_filtered(query, lang_filter)
     results = [r for r in results if r["Extension"] in (file_filter)]
 
     with Progress(transient=True) as progress:
-        # Capture number of results as total_work so progress updates are accurate.
+        # Use len(results) for "work" so progress updates correctly.
         total_work = len(results)
         task = progress.add_task("Working...", total=total_work)
 
@@ -32,17 +32,16 @@ def search_books(query) -> list:
             tinyurl = Shortener().tinyurl.short(resolved)
             book_data["Download"] = tinyurl
 
-            book_data = {
-                # Make keys lowercase so book_data['Author'] becomes Book.author.
+            book_map = {
+                # Make keys lowercase.
                 key.lower(): value
                 for key, value in book_data.items()
-                # Get relevant keys from Book._fields.
+                # Limit keys from dict using keys from Book.
                 if key.lower() in set(Book._fields)
             }
 
             # Create new Book objects and add to list.
-            book = Book(**book_data)
-            books.append(book)
+            books.append(Book(**book_map))
 
             # Update progress after each book.
             progress.update(task, advance=1)
