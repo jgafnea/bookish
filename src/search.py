@@ -1,9 +1,13 @@
+from collections import namedtuple
+
 from libgen_api import LibgenSearch
 from pyshorteners import Shortener
 from rich import box
 from rich.console import Console
 from rich.progress import Progress
 from rich.table import Table
+
+Book = namedtuple("Book", "title, year, author, extension, size, download")
 
 
 def search_books(query) -> list:
@@ -14,24 +18,39 @@ def search_books(query) -> list:
     search = LibgenSearch()
 
     # Filter twice, first using libgen for language, then using our own for file type.
-    pending = search.search_title_filtered(query, lang_filter)
-    results = [book for book in pending if book["Extension"] in (file_filter)]
+    results = search.search_title_filtered(query, lang_filter)
+    results = [r for r in results if r["Extension"] in (file_filter)]
 
-    # Capture length so progress advances correctly.
-    total_work = len(results)
+    books = []
+    for book_data in results:
+        resolved = search.resolve_download_links(book_data)["GET"]
+        tinyurl = Shortener().tinyurl.short(resolved)
+        book_data["Download"] = tinyurl
 
+        book_data = {
+            # Make keys lowercase so book_data['Author'] becomes Book.author.
+            key.lower(): value
+            for key, value in book_data.items()
+            # Get relevant keys from Book._fields.
+            if key.lower() in set(Book._fields)
+        }
+
+        # Create new Book objects and add to list.
+        book = Book(**book_data)
+        books.append(book)
+
+    # Sort new list showing most recent first.
+    books.sort(key=lambda book: book.year, reverse=True)
+
+    # Capture book quantity so progress updates roughly accurate.
+    total_work = len(books)
+
+    # Show progress then clear when finished.
     with Progress(transient=True) as progress:
         task = progress.add_task("Working...", total=total_work)
+        progress.update(task, advance=1)
 
-        for book in results:
-
-            resolved = search.resolve_download_links(book)["GET"]
-            tinyurl = Shortener().tinyurl.short(resolved)
-            book["Link"] = tinyurl
-
-            progress.update(task, advance=1)
-
-    return results
+    return books
 
 
 def display_results(results) -> None:
@@ -47,12 +66,18 @@ def display_results(results) -> None:
 
     for book in results:
         table.add_row(
-            book["Title"],
-            book["Year"],
-            book["Author"],
-            book["Extension"],
-            book["Size"],
-            book["Link"],
+            # book["Title"],
+            # book["Year"],
+            # book["Author"],
+            # book["Extension"],
+            # book["Size"],
+            # book["Download"],
+            book.title,
+            book.year,
+            book.author,
+            book.extension,
+            book.size,
+            book.download,
         )
 
     console = Console()
