@@ -23,7 +23,7 @@ def search_books(query) -> list:
     results = [r for r in results if r["Extension"] in (file_filter)]
 
     with Progress(transient=True) as progress:
-        # Capture n results so progress is roughly accurate.
+        # Capture number of results as total_work so progress updates are accurate.
         total_work = len(results)
         task = progress.add_task("Working...", total=total_work)
 
@@ -44,10 +44,10 @@ def search_books(query) -> list:
             book = Book(**book_data)
             books.append(book)
 
-            # Update
+            # Update progress after each book.
             progress.update(task, advance=1)
 
-    # Sort new list showing most recent first.
+    # Sort list so rich table shows most-recent first.
     books.sort(key=lambda book: book.year, reverse=True)
 
     return books
@@ -66,12 +66,6 @@ def display_results(results) -> None:
 
     for book in results:
         table.add_row(
-            # book["Title"],
-            # book["Year"],
-            # book["Author"],
-            # book["Extension"],
-            # book["Size"],
-            # book["Download"],
             book.title,
             book.year,
             book.author,
