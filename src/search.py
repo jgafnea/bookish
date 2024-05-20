@@ -1,32 +1,58 @@
+from collections import namedtuple
+
 from libgen_api import LibgenSearch
 from pyshorteners import Shortener
 from rich import box
 from rich.console import Console
-from rich.progress import track
+from rich.progress import Progress
 from rich.table import Table
+
+Book = namedtuple("Book", "title, year, author, extension, size, download")
+books = []
 
 
 def search_books(query) -> list:
 
+    search = LibgenSearch()
+
     lang_filter = {"Language": "English"}
     file_filter = ("epub", "pdf")
 
-    search = LibgenSearch()
+    # Filter twice, first using libgen for language, then using our own for file type.
+    results = search.search_title_filtered(query, lang_filter)
+    results = [r for r in results if r["Extension"] in (file_filter)]
 
-    filtered = search.search_title_filtered(query, lang_filter)
-    results = [book for book in filtered if book["Extension"] in (file_filter)]
+    with Progress(transient=True) as progress:
+        # Use len(results) for "work" so progress updates correctly.
+        total_work = len(results)
+        task = progress.add_task("Working...", total=total_work)
 
-    for book in track(results, description="Working..."):
+        for book_data in results:
+            resolved = search.resolve_download_links(book_data)["GET"]
+            tinyurl = Shortener().tinyurl.short(resolved)
+            book_data["Download"] = tinyurl
 
-        # Resolve links then shorten so they fit table
-        resolved = search.resolve_download_links(book)["GET"]
-        tinyurl = Shortener().tinyurl.short(resolved)
-        book["Link"] = tinyurl
+            book_map = {
+                # Make keys lowercase.
+                key.lower(): value
+                for key, value in book_data.items()
+                # Limit keys from dict using keys from Book.
+                if key.lower() in set(Book._fields)
+            }
 
-    return results
+            # Create new Book objects and add to list.
+            books.append(Book(**book_map))
+
+            # Update progress after each book.
+            progress.update(task, advance=1)
+
+    # Sort list so rich table shows most-recent first.
+    books.sort(key=lambda book: book.year, reverse=True)
+
+    return books
 
 
-def display_results(results):
+def display_results(results) -> None:
     # https://rich.readthedocs.io/en/stable/appendix/colors.html
     table = Table(title="", box=box.SIMPLE_HEAD)
 
@@ -39,12 +65,12 @@ def display_results(results):
 
     for book in results:
         table.add_row(
-            book["Title"],
-            book["Year"],
-            book["Author"],
-            book["Extension"],
-            book["Size"],
-            book["Link"],
+            book.title,
+            book.year,
+            book.author,
+            book.extension,
+            book.size,
+            book.download,
         )
 
     console = Console()
