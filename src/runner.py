@@ -3,7 +3,8 @@ import sys
 
 from rich.console import Console
 
-from .search import display_results, search_books
+from .display import display
+from .search import search
 
 
 def main():
@@ -16,10 +17,10 @@ def main():
         parser.print_help()
         sys.exit(1)
 
-    results = search_books(args.query)
+    results = search(args.query)
 
     if results:
-        display_results(results)
+        display(results)
     else:
         console = Console()
         console.print(
