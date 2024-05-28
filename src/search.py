@@ -22,9 +22,10 @@ def search(query) -> list:
     with Progress(transient=True) as progress:
         # Use len(results) for "work" so progress updates correctly.
         total_work = len(results)
-        task = progress.add_task("Working...", total=total_work)
+        task = progress.add_task("Working…", total=total_work)
 
         for book_data in results:
+            # Resolve download link from mirror.
             resolved = search.resolve_download_links(book_data)["GET"]
             tinyurl = Shortener().tinyurl.short(resolved)
             book_data["Download"] = tinyurl
