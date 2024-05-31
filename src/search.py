@@ -20,12 +20,12 @@ def search(query) -> list:
     results = [r for r in results if r["Extension"] in (file_filter)]
 
     def prepare(results):
-        # Sort by year.
+        # Sort by most-recent year.
         results.sort(key=lambda r: r["Year"], reverse=True)
 
-        # Shorten list to 10.
-        if len(results) > 10:
-            return results[:10]
+        # Shorten list for faster search and cleaner documentation.
+        if len(results) > 5:
+            return results[:5]
         return results
 
     # Get results from original results (now sorted and list is only 10)
