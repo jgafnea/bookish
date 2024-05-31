@@ -48,4 +48,7 @@ def search(query) -> list:
     # Sort list so rich table shows most-recent first.
     books.sort(key=lambda book: book.year, reverse=True)
 
+    # Limit to 10 for now to make recording demo easier.
+    if len(books) > 10:
+        return books[:10]
     return books
