@@ -16,8 +16,8 @@ docker build -t bookish .
 docker run --rm -it bookish "BOOK TITLE"
 
 # OPTIONAL: Use alias
-alias bq="docker run --rm -it bookish"
-bq "BOOK TITLE"
+alias bookish="docker run --rm -it bookish"
+bookish "BOOK TITLE"
 ```
 
 ### Poetry
@@ -28,8 +28,8 @@ poetry install
 poetry run bookish "BOOK TITLE"
 
 # OPTIONAL: Use alias
-alias bq="poetry run bookish"
-bq "BOOK TITLE"
+alias bookish="poetry run bookish"
+bookish "BOOK TITLE"
 ```
 
 > [!Warning]
