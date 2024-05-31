@@ -19,6 +19,18 @@ def search(query) -> list:
     results = search.search_title_filtered(query, lang_filter)
     results = [r for r in results if r["Extension"] in (file_filter)]
 
+    def prepare(results):
+        # Sort by year.
+        results.sort(key=lambda r: r["Year"], reverse=True)
+
+        # Shorten list to 10.
+        if len(results) > 10:
+            return results[:10]
+        return results
+
+    # Get results from original results (now sorted and list is only 10)
+    results = prepare(results)
+
     with Progress(transient=True) as progress:
         # Use len(results) for "work" so progress updates correctly.
         total_work = len(results)
@@ -46,9 +58,5 @@ def search(query) -> list:
             progress.update(task, advance=1)
 
     # Sort list so rich table shows most-recent first.
-    books.sort(key=lambda book: book.year, reverse=True)
-
-    # Limit to 10 for now to make recording demo easier.
-    if len(books) > 10:
-        return books[:10]
+    # books.sort(key=lambda book: book.year, reverse=True)
     return books
