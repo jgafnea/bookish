@@ -2,6 +2,19 @@
 
 `bookish` is a CLI tool for downloading eBooks.
 
+## Demo
+
+```bash
+bookish "eloquent javascript"
+                                                                                                                                                  
+  Title                                                                    Year   Author             Ext     Size   Download                      
+ ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
+  Eloquent JavaScript: A Modern Introduction to Programming, 3rd Edition   2019   Marijn Haverbeke   epub   18 Mb   https://tinyurl.com/23v4j3wc  
+  Eloquent JavaScript: A Modern Introduction to Programming                2019   Marijn Haverbeke   pdf    17 Mb   https://tinyurl.com/26g5csod  
+  Eloquent JavaScript: A Modern Introduction to Programming                2019   Marijn Haverbeke   epub   18 Mb   https://tinyurl.com/269ay8hl  
+  Eloquent JavaScript: A Modern Introduction to Programming                2019   Haverbeke,Marijn   pdf    17 Mb   https://tinyurl.com/29tftpfe  
+  Eloquent Javascript: A Modern Introduction to Programming                2018   Marijn Haverbeke   pdf     3 Mb   https://tinyurl.com/29wypsub
+```
 
 ## Usage
 
@@ -32,5 +45,5 @@ alias bookish="poetry run bookish"
 bookish "BOOK TITLE"
 ```
 
-> [!Warning]
-> Users are responsible for ensuring their use of this tool complies with all applicable laws and regulations.
+> [!Important]
+> Users are responsible for ensuring their use complies with all applicable laws and regulations.
