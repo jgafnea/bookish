@@ -1,12 +1,12 @@
-# bookish
+## bookish
 
 `bookish` is a CLI tool for downloading eBooks.
 
-## Demo
+### Example
 
 ```bash
 bookish "eloquent javascript"
-                                                                                                                                                  
+
   Title                                                                    Year   Author             Ext     Size   Download                      
  ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
   Eloquent JavaScript: A Modern Introduction to Programming, 3rd Edition   2019   Marijn Haverbeke   epub   18 Mb   https://tinyurl.com/23v4j3wc  
@@ -16,34 +16,34 @@ bookish "eloquent javascript"
   Eloquent Javascript: A Modern Introduction to Programming                2018   Marijn Haverbeke   pdf     3 Mb   https://tinyurl.com/29wypsub
 ```
 
-## Usage
+### Usage
 
-Install and run using [Docker](https://docs.docker.com/get-docker/) or [Poetry](https://python-poetry.org):
+Requires [Docker](https://docs.docker.com/get-docker/) or [Poetry](https://python-poetry.org).
 
- 
-### Docker
+ #### Docker
 
 ```bash
 git clone https://github.com/jgafnea/bookish && cd bookish
 docker build -t bookish .
-docker run --rm -it bookish "BOOK TITLE"
 
-# OPTIONAL: Use alias
+# Using with optional alias:
 alias bookish="docker run --rm -it bookish"
-bookish "BOOK TITLE"
+bookish "book title"
+
+# Using without alias:
+docker run --rm -it bookish "book title"
 ```
 
-### Poetry
+#### Poetry
 
 ```bash
 git clone https://github.com/jgafnea/bookish && cd bookish
 poetry install
-poetry run bookish "BOOK TITLE"
 
-# OPTIONAL: Use alias
+# Using with optional alias:
 alias bookish="poetry run bookish"
-bookish "BOOK TITLE"
+bookish "book title"
 ```
 
-> [!Important]
-> Users are responsible for ensuring their use complies with all applicable laws and regulations.
+> [!IMPORTANT]
+> Tool is meant for legal use only. Piracy is bad, mmm kay?
