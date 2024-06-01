@@ -1,8 +1,8 @@
-## bookish
+# bookish
 
 `bookish` is a CLI tool for downloading eBooks.
 
-### Example
+## Example
 
 ```bash
 bookish "eloquent javascript"
@@ -16,11 +16,11 @@ bookish "eloquent javascript"
   Eloquent Javascript: A Modern Introduction to Programming                2018   Marijn Haverbeke   pdf     3 Mb   https://tinyurl.com/29wypsub
 ```
 
-### Usage
+## Usage
 
 Requires [Docker](https://docs.docker.com/get-docker/) or [Poetry](https://python-poetry.org).
 
- #### Docker
+### Docker
 
 ```bash
 git clone https://github.com/jgafnea/bookish && cd bookish
@@ -34,7 +34,7 @@ bookish "book title"
 docker run --rm -it bookish "book title"
 ```
 
-#### Poetry
+### Poetry
 
 ```bash
 git clone https://github.com/jgafnea/bookish && cd bookish
@@ -43,7 +43,10 @@ poetry install
 # Using with optional alias:
 alias bookish="poetry run bookish"
 bookish "book title"
+
+# Using without alias:
+poetry run bookish "book title"
 ```
 
 > [!IMPORTANT]
-> Tool is meant for legal use only. Piracy is bad, mmm kay?
+> Tool is meant for legal use only. Piracy, wow, such bad. 
