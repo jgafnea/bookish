@@ -4,7 +4,7 @@
 
 ## Example
 
-![Example](https://i.imgur.com/b1zrBk3.png)
+<img src="./assets/example.png" alt="Command output example" style="max-width: 80%; height: auto;">
 
 ## Usage
 
