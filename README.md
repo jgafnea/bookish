@@ -1,14 +1,12 @@
 # bookish
 
-`bookish` is a CLI tool for downloading eBooks.
-
-## Example
-
 <img src="./assets/example.png" alt="Command output example" style="max-width: 80%; height: auto;">
+
+`bookish` is a CLI tool created to search and download eBooks without navigating spammy websites.
 
 ## Usage
 
-Requires [Docker](https://docs.docker.com/get-docker/) or [Poetry](https://python-poetry.org).
+Use Docker or Poetry:
 
 ### Docker
 
@@ -18,10 +16,10 @@ docker build -t bookish .
 
 # Using with optional alias:
 alias bookish="docker run --rm -it bookish"
-bookish "book title"
+bookish "eloquent javascript"
 
 # Using without alias:
-docker run --rm -it bookish "book title"
+docker run --rm -it bookish "eloquent javascript"
 ```
 
 ### Poetry
@@ -32,8 +30,8 @@ poetry install
 
 # Using with optional alias:
 alias bookish="poetry run bookish"
-bookish "book title"
+bookish "eloquent javascript"
 
 # Using without alias:
-poetry run bookish "book title"
+poetry run bookish "eloquent javascript"
 ```
