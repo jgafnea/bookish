@@ -1,4 +1,7 @@
+
 # bookish
+
+![Tests](https://github.com/jgafnea/bookish/actions/workflows/python.yml/badge.svg)
 
 <img src="./assets/example.png" alt="Command output example" style="max-width: 80%; height: auto;">
 
